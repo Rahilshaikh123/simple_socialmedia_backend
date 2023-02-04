@@ -1,4 +1,5 @@
 const User=require("../model/usermodel")
+const bcrypt=require("bcrypt")
 
 const getallUser=async(req,res)=>{
     let users
@@ -18,11 +19,18 @@ const getallUser=async(req,res)=>{
 
 const createUser=async(req,res)=>{
 
-        const email=req.body.email
+        const {name,email,password}=req.body
         const user= await User.findOne({email:email})
+        let salt =await bcrypt.genSalt(10)
+        let secpass=await bcrypt.hash(req.body.password,salt)
 
         if (!user) {
-            let newuser= await User.create(req.body)
+            let user1=new User({
+                name,
+                email,
+                password:secpass
+            })
+            await user1.save()
             res.status(200).json({msg:"User successfully created"})
         }
         else{
@@ -36,9 +44,11 @@ const login=async(req,res)=>{
     let user1=await User.findOne({email:email})
 
     if(user1){
-        let user2=await User.findOne({password:pass})
-        if(user2){
-            res.send("login sucessful")
+        let ispasscorrrect=bcrypt.compareSync(pass,user1.password)
+        if(ispasscorrrect){
+            res.status(203).json({
+                message:"login sucessfull"
+            })
         }
         else{
             return res.status(405).json("password dot match login fail")
