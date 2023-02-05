@@ -8,7 +8,7 @@ const bodyparser=require("body-parser")
 app.use(bodyparser.json())
 app.use(bodyparser.urlencoded({extended:false}))
 dbconnect()
-app.use("/api",router)
+app.use("/api/user",router)
 app.listen(PORT,()=>{
     console.log(`your server is started at PORT: ${PORT}`)
 })
