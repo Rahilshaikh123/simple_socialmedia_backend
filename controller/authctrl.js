@@ -28,7 +28,8 @@ const createUser=async(req,res)=>{
             let user1=new User({
                 name,
                 email,
-                password:secpass
+                password:secpass,
+                blogs:[]
             })
             await user1.save()
             res.status(200).json({msg:"User successfully created"})

@@ -14,8 +14,13 @@ const userSchema=mongoose.Schema({
         type:String,
         required:true,
         minlenght:true
-    }
+    },
+    blogs:[{
+        type:mongoose.Types.ObjectId,
+        ref:"Blog",
+        required:true
+    }]
 
 })
-const User=mongoose.model("Authservice",userSchema)
-module.exports=User;
+const User=mongoose.model("User",userSchema)
+module.exports=User
